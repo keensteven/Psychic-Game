@@ -1,0 +1,137 @@
+<!--
+    ![Psychic](Images/1-Psychic.jpg)
+
+    1. [Watch the demo](https://youtu.be/qTc45Lox97g).
+
+    2. You're going to make a game just like the one in the video. Essentially, the app randomly picks a letter, 
+    and the user has to guess which letter the app chose. Put the following text on your page:
+
+    3. Guess what letter I'm thinking of
+
+    4. Wins: (# of times the user has guessed the letter correctly)
+
+    5. Losses: (# of times the user has failed to guess the letter correctly after exhausting all guesses)
+
+    6. Guesses Left: (# of guesses left. This will update)
+
+    7. Your Guesses So Far: (the specific letters that the user typed. Display these until the user either wins or loses.)
+
+    8. When the player wins, increase the Wins counter and start the game over again (without refreshing the page).
+
+    9. When the player loses, increase the Losses counter and restart the game without a page refresh (just like when the user wins).
+-->
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>About Steven Keen</title>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/css?family=Mr+Dafoe" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+                <div class="jumbotron">
+                    <h1>The Psychic Game</h1>
+
+                    <p>Guess what letter I'm thinking of.</p>
+                    <p id="wins-text"></p>
+                    <p id="losses-text"></p>
+                    <p id="guessesleft-text"></p>
+                    <p id="userchoice-text">Your guesses so far:</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        // Creates an array that lists out all of the options.
+
+        var computerChoices = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+        // Creating variables to hold the number of wins, losses, and ties. They start at 0.
+        var wins = 0;
+        var losses = 0;
+
+        // Create variables that hold references to the places in the HTML where we want to display things.
+        var userChoiceText = document.getElementById("userchoice-text");
+        var computerChoiceText = document.getElementById("computerchoice-text");
+        var winsText = document.getElementById("wins-text");
+        var lossesText = document.getElementById("losses-text");
+        var guessesLeftText = document.getElementById("guessesleft-text");
+        var guessesLeft = 10;
+        
+        // Creating an empty array for user choices.
+        var guessesSoFar = [];
+
+        // Randomly chooses a choice from the options array. This is the Computer's guess.
+        var computerGuess = "";
+        winsText.textContent = "wins: " + wins;
+        lossesText.textContent = "losses: " + losses++;
+
+        // Reset Game
+        resetGame()
+        function resetGame() {
+            guessesLeft = 10;
+
+            // Creating an empty array for user choices.
+            guessesSoFar = [];
+
+            // Randomly chooses a choice from the options array. This is the Computer's guess.
+            computerGuess = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+        }
+
+        // This function is run whenever the user presses a key.
+        document.onkeyup = function (event) {
+
+            // Determines which key was pressed.
+            var userGuess = event.key.toLocaleLowerCase();
+
+            // It then takes the user's response and "pushes" (or adds) the variable to the end of the guessesSoFar array.
+            guessesSoFar.push(userGuess);
+
+            // This logic determines the outcome of the game (win/loss), and increments the appropriate number
+            if (userGuess === computerGuess) {
+                wins++;
+                winsText.textContent = "wins: " + wins;
+                resetGame();
+            }
+
+            else {
+
+                if (guessesLeft > 0) {
+                    guessesLeftText.textContent = "Guesses Left: " + guessesLeft--;
+                }
+
+                else {
+                    lossesText.textContent = "losses: " + losses++;
+                    resetGame();
+                }
+            }
+
+            // We then loop through the guessesSoFar array...
+            for (var j = 0; j < guessesSoFar.length; j++) {
+
+                // Display the user and computer guesses, and wins/losses/ties.
+                userChoiceText.textContent = "Guesses so far: " + guessesSoFar.join(", ");
+            }
+
+        };
+
+    </script>
+
+    <!-- LINK TO EXTERNAL STYLE SHEET
+        <script src="assets/javascript/game.js"></script>
+    -->
+
+</body>
+
+</html>
